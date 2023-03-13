@@ -49,7 +49,7 @@ class GameOfWar{
     let p1Grave = [];
     let p2Grave = [];
 
-    //players play space -- might not need these yet
+    //players play space -- USE THESE FOR WAR
     let p1Field = [];
     let p2Field = [];
 
@@ -63,21 +63,26 @@ class GameOfWar{
     //have each player play a card
     fight(){
         //check the first card of each player agains eachother
-        if(p1Hand[0].val !== p2Hand.val){
-            //resolve the two cases
-            if(p1Hand[0].val > p2Hand[0]){
-                //then p1 takes both cards into their grave
-                p1Grave.unshift(p1Hand.shift());
-                p1Grave.unshift(p2Hand.shift());
-            }
-            else{
-
-            }
+        //play the two cards to the field
+        p1Field.unshift(p1Hand.shift());
+        p2Field.unshift(p2Hand.shift());
+        //resolve the two cases
+        
+        if(p1Field[0].val > p2Field[0]){
+            //then p1 takes both cards into their grave
+            p1Grave.unshift(p1Field.shift());
+            p1Grave.unshift(p2Field.shift());
         }
-        //if not then GO TO WAR
+        else if(p2Field[0].val > p2Field[0].val){
+            //then p2 takes both cards to their grave
+            p2Grave.unshift(p1Field.shift());
+            p2Grave.unshift(p2Field.shift());
+        }
+        //the two cards are equal
         else{
-
+            this.war();
         }
+       
     }
     //go to war
     war(){
