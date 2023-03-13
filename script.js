@@ -39,66 +39,84 @@ class Deck{
 
 class GameOfWar{
     constructor(){
-    //create deck
-    //split deck between players
+   
     //have two arrays for each players hand
-    let player1Hand = [];
-    let player2Hand = [];
+    this.player1Hand = [];
+    this.player2Hand = [];
 
     //players graveyards
-    let p1Grave = [];
-    let p2Grave = [];
+    this.p1Grave = [];
+    this.p2Grave = [];
 
-    //players play space -- USE THESE FOR WAR
-    let p1Field = [];
-    let p2Field = [];
-
+    //initialize
+    this.initialSetup();
+    
     }
 
     initialSetup () {
+         //create deck
+        //split deck between players
         let deck = new Deck();
-        p1Hand = deck.cards.slice(0,26)
-        p2Hand = deck.cards.slice(26,deck.cards.length)
+        this.p1Hand = deck.cards.slice(0,26)
+        this.p2Hand = deck.cards.slice(26,deck.cards.length)
     }
     //have each player play a card
     fight(){
-        //check the first card of each player agains eachother
-        //play the two cards to the field
-        p1Field.unshift(p1Hand.shift());
-        p2Field.unshift(p2Hand.shift());
-        //resolve the two cases
+
+        //players 'play space' -- USE THESE FOR FIGHTING AND FOR WAR
+        let p1Field = [];
+        let p2Field = [];
+
         
-        if(p1Field[0].val > p2Field[0]){
+        //players play their cards to the field
+       p1Field.unshift(this.p1Hand.shift());
+       p2Field.unshift(this.p2Hand.shift());
+        
+        //console.log(p1Field[0].val)
+
+       //check the cards on the field against of eachother
+       //resolve the two cases
+        if(p1Field[0].val > p2Field[0].val){
             //then p1 takes both cards into their grave
-            p1Grave.unshift(p1Field.shift());
-            p1Grave.unshift(p2Field.shift());
+            this.p1Grave.unshift(p1Field.shift());
+            this.p1Grave.unshift(p2Field.shift());
         }
-        else if(p2Field[0].val > p2Field[0].val){
+        else if(p2Field[0].val > p1Field[0].val){
             //then p2 takes both cards to their grave
-            p2Grave.unshift(p1Field.shift());
-            p2Grave.unshift(p2Field.shift());
+            this.p2Grave.unshift(p1Field.shift());
+            this.p2Grave.unshift(p2Field.shift());
         }
         //the two cards are equal
         else{
-            this.war();
+            console.log(`the 2 cards ${p1Field[0].val} and ${p2Field[0].val}`);
+            console.log(`the type of the value of the first card is ${typeof p1Field[0].val}`);
+            console.log(`the type of the value of the second card is ${typeof p2Field[0].val}`);
+            //this.war();
         }
        
     }
     //go to war
-    war(){
-
+    war(p1Side,p2Side){
+        
     }
 }
 
-const cards = new Deck();
+//const cards = new Deck();
 //console.log(cards)
-
+/*
 console.log(cards.cards.slice(0,26));
 console.log(cards.cards.slice(26,cards.cards.length));
-
+*/
 let testArr1 = ['r','a','c','e','c','a','r'];
 let testArr2 = [];
-
+/*
 testArr2.unshift(testArr1.shift());
 console.log(testArr1[0]);
 console.log(testArr2[0]);
+*/
+
+//test the game so far 
+let war = new GameOfWar();
+war.fight() ;
+console.log(war.p1Grave);
+console.log(war.p2Grave);
