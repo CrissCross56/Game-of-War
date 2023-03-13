@@ -97,7 +97,14 @@ class GameOfWar{
     }
     //go to war
     war(p1Side,p2Side){
-        
+        //add another card frome ach players hand to their respective playing field
+        //if the first cards on their playing fields are of the same value again, then call this method again pasing in the newly changed arrays
+        //once a side wins, distribute
+    }
+
+    //winner takes all
+    spoils(p1Side,p2Side){
+
     }
 }
 
