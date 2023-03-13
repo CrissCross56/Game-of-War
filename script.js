@@ -77,10 +77,10 @@ class GameOfWar{
        //check the cards on the field against of eachother
         //the two cards are equal
         if(p1Field[0].val === p2Field[0].val){
-            console.log(`the 2 cards ${p1Field[0].val} and ${p2Field[0].val}`);
-            console.log(`the type of the value of the first card is ${typeof p1Field[0].val}`);
-            console.log(`the type of the value of the second card is ${typeof p2Field[0].val}`);
-            //this.war();
+            console.log(`Player one plays the ${p1Field[0].rank} of ${p1Field[0].suit} and Player two plays the ${p2Field[0].rank} of ${p2Field[0].suit}`);
+            //console.log(`the type of the value of the first card is ${typeof p1Field[0].val}`);
+            //console.log(`the type of the value of the second card is ${typeof p2Field[0].val}`);
+            this.war(p1Field,p2Field);
         }
         else{
             //resolve normally
@@ -89,20 +89,41 @@ class GameOfWar{
        
     }
     //go to war
-    war(p1Side,p2Side){
+    war(p1Field,p2Field){
         //add 3 cards from each players hand to their respective playing field
         //if the first cards on their playing fields are of the same value again, then call this method again pasing in the newly changed arrays
         //once a side wins, distribute
-        console.log(`Both players go to war and play 3 cards face down`);
-        console.log(`The fourt`)
+        console.log(`Both players go to war and play 3 cards face down, and a fourth card face up`);
+        for(let i = 0; i < 4; i++){
+            p1Field.unshift(this.p1Hand.shift());
+            p2Field.unshift(this.p2Hand.shift());
+        }
+        //see if players have actually played as many cards as they need to for war
+        console.log(p1Field.length);
+        console.log(p2Field.length);
+
+        console.log(`Player one plays their fourth card the ${p1Field[0].rank} of ${p1Field[0].suit}`);
+        console.log(`Player two plays their fourth card the ${p2Field[0].rank} of ${p2Field[0].suit}`);
+        //if the fourth cards are not equal to each other then call spoils
+        if(p1Field[0].val !== p2Field[0].val){
+            this.spoils(p1Field,p2Field);
+        }
+        //other wise we go to war again
+        else{
+            this.war(p1Field,p2Field);
+        }
+
     }
 
     //winner takes all
-    spoils(p1Field,p2Field){
+    spoils(p1Field,p2Field, warBool = false){
         if(p1Field[0].val > p2Field[0].val){
 
             console.log(`player one plays ${p1Field[0].rank} of ${p1Field[0].suit}`);
             console.log(`player two plays  ${p2Field[0].rank} of ${p2Field[0].suit}`);
+
+            //more checking
+            console.log("Player one has won" + p1Field.length + p2Field.length)
             //then p1 takes all played cards into their grave
             for(let i = 0; i < p1Field.length; i++){
                 this.p1Grave.unshift(p1Field.shift());
@@ -116,6 +137,8 @@ class GameOfWar{
 
             console.log(`player one plays ${p1Field[0].rank} of ${p1Field[0].suit}`);
             console.log(`player two plays  ${p2Field[0].rank} of ${p2Field[0].suit}`);
+
+            console.log("Player two has won" + p1Field.length + p2Field.length)
 
             //then p2 takes all played cards to their grave
             for(let i = 0; i < p1Field.length; i++){
@@ -136,10 +159,10 @@ class GameOfWar{
 /*
 console.log(cards.cards.slice(0,26));
 console.log(cards.cards.slice(26,cards.cards.length));
-*/
+
 let testArr1 = ['r','a','c','e','c','a','r'];
 let testArr2 = [];
-/*
+
 testArr2.unshift(testArr1.shift());
 console.log(testArr1[0]);
 console.log(testArr2[0]);
