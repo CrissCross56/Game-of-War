@@ -75,36 +75,59 @@ class GameOfWar{
         //console.log(p1Field[0].val)
 
        //check the cards on the field against of eachother
-       //resolve the two cases
-        if(p1Field[0].val > p2Field[0].val){
-            //then p1 takes both cards into their grave
-            this.p1Grave.unshift(p1Field.shift());
-            this.p1Grave.unshift(p2Field.shift());
-        }
-        else if(p2Field[0].val > p1Field[0].val){
-            //then p2 takes both cards to their grave
-            this.p2Grave.unshift(p1Field.shift());
-            this.p2Grave.unshift(p2Field.shift());
-        }
         //the two cards are equal
-        else{
+        if(p1Field[0].val === p2Field[0].val){
             console.log(`the 2 cards ${p1Field[0].val} and ${p2Field[0].val}`);
             console.log(`the type of the value of the first card is ${typeof p1Field[0].val}`);
             console.log(`the type of the value of the second card is ${typeof p2Field[0].val}`);
             //this.war();
         }
+        else{
+            //resolve normally
+            this.spoils(p1Field,p2Field);
+        }
        
     }
     //go to war
     war(p1Side,p2Side){
-        //add another card frome ach players hand to their respective playing field
+        //add 3 cards from each players hand to their respective playing field
         //if the first cards on their playing fields are of the same value again, then call this method again pasing in the newly changed arrays
         //once a side wins, distribute
+        console.log(`Both players go to war and play 3 cards face down`);
+        console.log(`The fourt`)
     }
 
     //winner takes all
-    spoils(p1Side,p2Side){
+    spoils(p1Field,p2Field){
+        if(p1Field[0].val > p2Field[0].val){
 
+            console.log(`player one plays ${p1Field[0].rank} of ${p1Field[0].suit}`);
+            console.log(`player two plays  ${p2Field[0].rank} of ${p2Field[0].suit}`);
+            //then p1 takes all played cards into their grave
+            for(let i = 0; i < p1Field.length; i++){
+                this.p1Grave.unshift(p1Field.shift());
+            }
+            for(let i = 0; i < p2Field.length; i++){
+                this.p1Grave.unshift(p2Field.shift());
+            }
+            
+        }
+        else if(p2Field[0].val > p1Field[0].val){
+
+            console.log(`player one plays ${p1Field[0].rank} of ${p1Field[0].suit}`);
+            console.log(`player two plays  ${p2Field[0].rank} of ${p2Field[0].suit}`);
+
+            //then p2 takes all played cards to their grave
+            for(let i = 0; i < p1Field.length; i++){
+                this.p2Grave.unshift(p1Field.shift());
+            }
+            for(let i = 0; i < p2Field.length; i++){
+                this.p2Grave.unshift(p2Field.shift());
+            }
+
+            
+        }
+        
     }
 }
 
