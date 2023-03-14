@@ -62,7 +62,7 @@ class GameOfWar{
     }
     //have each player play a card
     fight(){
-
+        let round = 1;
         //players 'play space' -- USE THESE FOR FIGHTING AND FOR WAR
         let p1Field = [];
         let p2Field = [];
@@ -72,7 +72,7 @@ class GameOfWar{
        p1Field.unshift(this.p1Hand.shift());
        p2Field.unshift(this.p2Hand.shift());
         
-        //console.log(p1Field[0].val)
+       console.log(round);
 
        //check the cards on the field against of eachother
         //the two cards are equal
@@ -86,7 +86,7 @@ class GameOfWar{
             //resolve normally
             this.spoils(p1Field,p2Field);
         }
-       
+       round ++;
     }
     //go to war
     war(p1Field,p2Field){
@@ -154,8 +154,12 @@ class GameOfWar{
 
             this.p1Grave.unshift(...p2Field.splice(0,p2Field.length));
             this.p1Grave.unshift(...p1Field.splice(0,p1Field.length));
-          
+
             console.log(`P1 wins this bout. They took ${this.p1Grave.length} cards`);
+
+            //shuffle the grave and move it all into the bottom of the players hand
+            this.p1Hand.push(...this.reArm(this.p1Grave));
+
         }
         else if(p2Field[0].val > p1Field[0].val){
 
@@ -166,10 +170,12 @@ class GameOfWar{
             
             this.p2Grave.unshift(...p1Field.splice(0,p1Field.length));
             this.p2Grave.unshift(...p2Field.splice(0,p2Field.length));
-            
-            //move the graveyard into the hand after shuffling them
 
             console.log(`P2 wins this bout. They took ${this.p2Grave.length} cards`);
+
+            //move the graveyard into the hand after shuffling them
+            this.p2Hand.push(...this.reArm(this.p2Grave))
+
         }
         
     }
@@ -194,10 +200,23 @@ let war = new GameOfWar();
 //console.log(war.p1Grave);
 //console.log(war.p2Grave);
 
-let run = true;
-//create a game loop that only breaks when the .surrender() method returns tru
-while(run){
-    war.fight();
 
-    run = war.surrender();
+//create a game loop that only breaks when conditions are satisfied
+let promptStr = prompt("Run War?", "y/n");
+if(promptStr === 'y'){
+    while(true){
+        war.fight();
+        if(war.p1Hand.length < 4 || war.p2Hand.length < 4){
+            war.surrender();
+            break;
+        }
+    }
 }
+else if(promptStr === 'n'){
+    console.log('goodbye');
+}
+else{
+    console.log('not a valid answer');
+}
+
+
