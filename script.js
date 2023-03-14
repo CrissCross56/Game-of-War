@@ -124,17 +124,24 @@ class GameOfWar{
         //return true if a player an no longer fight a war (they have less then 4 cards)
         if(this.player1Hand.length < 4 || this.player2Hand.length < 4){
             if(this.player1Hand < 4){
-                console.log("Playe 1 loses, the do not have enough cards to go to war.");
+                console.log("Player 1 loses, the do not have enough cards to go to war.");
                 return true;
             }
             else{
-                console.log("Playe 2 loses, the do not have enough cards to go to war.");
+                console.log("Player 2 loses, the do not have enough cards to go to war.");
                 return true;
             }
         }
         else{
             return false;
         }
+    }
+
+
+
+    //shuffle and return an array
+    reArm(arr){
+        return arr = arr.sort((a,b) => 0.5 - Math.random());
     }
 
     //winner takes all
@@ -164,6 +171,7 @@ class GameOfWar{
             this.p2Grave.unshift(...p1Field.splice(0,p1Field.length));
             this.p2Grave.unshift(...p2Field.splice(0,p2Field.length));
             
+            //move the graveyard into the hand after shuffling them
 
             console.log(`P2 wins this bout. They took ${this.p2Grave.length}`);
         }
@@ -187,6 +195,13 @@ console.log(testArr2[0]);
 
 //test the game so far 
 let war = new GameOfWar();
-war.fight() ;
 console.log(war.p1Grave);
 console.log(war.p2Grave);
+
+let run = true;
+//create a game loop that only breaks when the .surrender() method returns tru
+/*while(run){
+    war.fight();
+
+    run = war.surrender();
+}*/
