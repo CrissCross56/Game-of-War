@@ -94,23 +94,19 @@ class GameOfWar{
         //if the first cards on their playing fields are of the same value again, then call this method again pasing in the newly changed arrays
         //once a side wins, distribute
 
-        //find a better way to add more cards
-
         console.log(`Both players go to war and play 3 cards face down, and a fourth card face up`);
         for(let i = 0; i < 4; i++){
             p1Field.unshift(this.p1Hand.shift());
             p2Field.unshift(this.p2Hand.shift());
         }
-        //see if players have actually played as many cards as they need to for war
-        console.log(p1Field.length);
-        console.log(p2Field.length);
+       
 
         console.log(`Player one plays their fourth card the ${p1Field[0].rank} of ${p1Field[0].suit}`);
         console.log(`Player two plays their fourth card the ${p2Field[0].rank} of ${p2Field[0].suit}`);
         //if the fourth cards are not equal to each other then call spoils
         if(p1Field[0].val !== p2Field[0].val){
             this.spoils(p1Field,p2Field);
-            console.log("---- Calling spoils after war ----")
+            //console.log("---- Calling spoils after war ----")
         }
         //other wise we go to war again
         else{
@@ -125,15 +121,15 @@ class GameOfWar{
         if(this.player1Hand.length < 4 || this.player2Hand.length < 4){
             if(this.player1Hand < 4){
                 console.log("Player 1 loses, the do not have enough cards to go to war.");
-                return true;
+                return false;
             }
             else{
                 console.log("Player 2 loses, the do not have enough cards to go to war.");
-                return true;
+                return false;
             }
         }
         else{
-            return false;
+            return true;
         }
     }
 
@@ -146,7 +142,7 @@ class GameOfWar{
 
     //winner takes all
     spoils(p1Field,p2Field){
-        console.log("This p1Field is: ", p1Field)
+       // console.log("This p1Field is: ", p1Field)
      
 
         if(p1Field[0].val > p2Field[0].val){
@@ -159,7 +155,7 @@ class GameOfWar{
             this.p1Grave.unshift(...p2Field.splice(0,p2Field.length));
             this.p1Grave.unshift(...p1Field.splice(0,p1Field.length));
           
-            console.log(`P1 wins this bout. They took ${this.p1Grave.length}`);
+            console.log(`P1 wins this bout. They took ${this.p1Grave.length} cards`);
         }
         else if(p2Field[0].val > p1Field[0].val){
 
@@ -173,7 +169,7 @@ class GameOfWar{
             
             //move the graveyard into the hand after shuffling them
 
-            console.log(`P2 wins this bout. They took ${this.p2Grave.length}`);
+            console.log(`P2 wins this bout. They took ${this.p2Grave.length} cards`);
         }
         
     }
@@ -195,13 +191,13 @@ console.log(testArr2[0]);
 
 //test the game so far 
 let war = new GameOfWar();
-console.log(war.p1Grave);
-console.log(war.p2Grave);
+//console.log(war.p1Grave);
+//console.log(war.p2Grave);
 
 let run = true;
 //create a game loop that only breaks when the .surrender() method returns tru
-/*while(run){
+while(run){
     war.fight();
 
     run = war.surrender();
-}*/
+}
