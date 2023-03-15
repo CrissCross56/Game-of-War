@@ -82,7 +82,7 @@ class GameOfWar{
             //resolve normally
             this.spoils(p1Field,p2Field);
         }
-       round ++;
+       
     }
     //go to war
     war(p1Field,p2Field){
@@ -232,8 +232,7 @@ let war = new GameOfWar();
 
 
 //create a game loop that only breaks when conditions are satisfied
-let promptStr = prompt("Run War?", "y/n");
-if(promptStr === 'y'){
+
     while(true){
         war.fight();
         if(war.player1Hand.length < 4 || war.player2Hand.length < 4){
@@ -241,13 +240,8 @@ if(promptStr === 'y'){
             break;
         }
     }
-}
-else if(promptStr === 'n'){
-    console.log('goodbye');
-}
-else{
-    console.log('not a valid answer');
-}
+
+
 
 
 war.surrender();
