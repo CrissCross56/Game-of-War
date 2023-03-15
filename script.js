@@ -57,23 +57,19 @@ class GameOfWar{
          //create deck
         //split deck between players
         let deck = new Deck();
-        this.p1Hand = deck.cards.slice(0,26)
-        this.p2Hand = deck.cards.slice(26,deck.cards.length)
+        this.player1Hand = deck.cards.slice(0,26)
+        this.player2Hand = deck.cards.slice(26,deck.cards.length)
     }
     //have each player play a card
     fight(){
-        let round = 1;
         //players 'play space' -- USE THESE FOR FIGHTING AND FOR WAR
         let p1Field = [];
         let p2Field = [];
-
         
         //players play their cards to the field
-       p1Field.unshift(this.p1Hand.shift());
-       p2Field.unshift(this.p2Hand.shift());
+       p1Field.unshift(this.player1Hand.shift());
+       p2Field.unshift(this.player2Hand.shift());
         
-       console.log(round);
-
        //check the cards on the field against of eachother
         //the two cards are equal
         if(p1Field[0].val === p2Field[0].val){
@@ -93,24 +89,46 @@ class GameOfWar{
         //add 3 cards from each players hand to their respective playing field
         //if the first cards on their playing fields are of the same value again, then call this method again pasing in the newly changed arrays
         //once a side wins, distribute
+        // If player has enough cards
+        if (this.player1Hand.length <= 3){
+            console.log("Player 1 doen't have enough cards")
+            console.log(`Field 1 has ${p1Field.length} cards left`);
+            console.log(`Field 2 has ${p2Field.length} cards left`);
 
-        console.log(`Both players go to war and play 3 cards face down, and a fourth card face up`);
-        for(let i = 0; i < 4; i++){
-            p1Field.unshift(this.p1Hand.shift());
-            p2Field.unshift(this.p2Hand.shift());
-        }
-       
+             //push whats left on the field in this event into player2's hand
+             this.p2Grave.unshift(...p1Field.splice(0,p1Field.length));
+             this.p2Grave.unshift(...p2Field.splice(0,p2Field.length));
+             this.player2Hand.push(...this.reArm(this.p2Grave));
+        } else if (this.player2Hand.length <= 3) {
+            console.log("Player 2 doen't have enough cards")
+            console.log(`Field 1 has ${p1Field.length} cards left`);
+            console.log(`Field 2 has ${p2Field.length} cards left`);
+            //push whats left on the field in this event into player1's hand
+            this.p1Grave.unshift(...p2Field.splice(0,p2Field.length));
+            this.p1Grave.unshift(...p1Field.splice(0,p1Field.length));
+            this.player1Hand.push(...this.reArm(this.p1Grave));
+            
 
-        console.log(`Player one plays their fourth card the ${p1Field[0].rank} of ${p1Field[0].suit}`);
-        console.log(`Player two plays their fourth card the ${p2Field[0].rank} of ${p2Field[0].suit}`);
-        //if the fourth cards are not equal to each other then call spoils
-        if(p1Field[0].val !== p2Field[0].val){
-            this.spoils(p1Field,p2Field);
-            //console.log("---- Calling spoils after war ----")
-        }
-        //other wise we go to war again
-        else{
-            this.war(p1Field,p2Field);
+        } else {
+            console.log(`Both players go to war and play 3 cards face down, and a fourth card face up`);
+            for(let i = 0; i < 4; i++){
+                p1Field.unshift(this.player1Hand.shift());
+                p2Field.unshift(this.player2Hand.shift());
+            }
+           
+    
+            console.log(`Player one plays their fourth card the ${p1Field[0].rank} of ${p1Field[0].suit}`);
+            console.log(`Player two plays their fourth card the ${p2Field[0].rank} of ${p2Field[0].suit}`);
+            //if the fourth cards are not equal to each other then call spoils
+            if(p1Field[0].val !== p2Field[0].val){
+                this.spoils(p1Field,p2Field);
+                //console.log("---- Calling spoils after war ----")
+                //console.log(p1Field,p2Field);
+            }
+            //other wise we go to war again
+            else{
+                this.war(p1Field,p2Field);
+            }
         }
 
     }
@@ -119,13 +137,20 @@ class GameOfWar{
     surrender(){
         //return true if a player an no longer fight a war (they have less then 4 cards)
         if(this.player1Hand.length < 4 || this.player2Hand.length < 4){
-            if(this.player1Hand < 4){
+            if(this.player1Hand.length < 4){
                 console.log("Player 1 loses, the do not have enough cards to go to war.");
-                return false;
+                console.log('player 2 has ' + this.player2Hand.length + " cards");
+                console.log('player 1 has ' + this.player1Hand.length + " cards");
+
+            }
+            else if(this.player2Hand.length < 4){
+                console.log("Player 2 loses, the do not have enough cards to go to war.");
+                console.log('player 1 has ' + this.player1Hand.length + " cards");
+                console.log("player 2 has " + this.player2Hand.length + " cards");
+
             }
             else{
-                console.log("Player 2 loses, the do not have enough cards to go to war.");
-                return false;
+                console.log('some shit is goin down AAAAAAAHHHH');
             }
         }
         else{
@@ -158,7 +183,10 @@ class GameOfWar{
             console.log(`P1 wins this bout. They took ${this.p1Grave.length} cards`);
 
             //shuffle the grave and move it all into the bottom of the players hand
-            this.p1Hand.push(...this.reArm(this.p1Grave));
+            this.player1Hand.push(...this.reArm(this.p1Grave));
+            
+            //PUSH DOES NOT DELETE THE ITEMS FRMO AN ARRAY THAT ARE BEING PUSHED
+            this.p1Grave.length = 0;
 
         }
         else if(p2Field[0].val > p1Field[0].val){
@@ -174,7 +202,9 @@ class GameOfWar{
             console.log(`P2 wins this bout. They took ${this.p2Grave.length} cards`);
 
             //move the graveyard into the hand after shuffling them
-            this.p2Hand.push(...this.reArm(this.p2Grave))
+            this.player2Hand.push(...this.reArm(this.p2Grave))
+            //PUSH DOES NOT DELETE THE ITEMS FRMO AN ARRAY THAT ARE BEING PUSHED
+            this.p2Grave.length = 0;
 
         }
         
@@ -206,8 +236,8 @@ let promptStr = prompt("Run War?", "y/n");
 if(promptStr === 'y'){
     while(true){
         war.fight();
-        if(war.p1Hand.length < 4 || war.p2Hand.length < 4){
-            war.surrender();
+        if(war.player1Hand.length < 4 || war.player2Hand.length < 4){
+            
             break;
         }
     }
@@ -220,3 +250,4 @@ else{
 }
 
 
+war.surrender();
